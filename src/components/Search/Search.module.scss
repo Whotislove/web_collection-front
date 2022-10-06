@@ -1,0 +1,23 @@
+.root {
+  position: relative;
+  left: -120px;
+  .input {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 12px 20px;
+    border-radius: 8px;
+    padding-left: 45px;
+    font-size: 16px;
+    font-weight: 600;
+    &:focus {
+      border: 1px solid rgba(0, 0, 0, 1);
+    }
+  }
+  .icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 20%;
+    left: 3%;
+    opacity: 0.3;
+  }
+}
