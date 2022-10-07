@@ -1,0 +1,57 @@
+.parent {
+  display: block;
+  .top {
+    display: flex;
+    flex-direction: row;
+  }
+}
+.article {
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  top: 1%;
+  left: 3%;
+}
+.popular {
+  grid-area: 1 / 1 / 2 / 2;
+  padding: 10px;
+  width: 50%;
+  .underSlider {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.tags {
+  grid-area: 1 / 2 / 2 / 3;
+  padding: 10px;
+  width: 50%;
+  &_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 20px 0px;
+    .tag {
+      font-size: 20px;
+      margin: 10px 0px 0px 10px;
+      background-color: rgb(23, 126, 194);
+      color: white;
+      padding: 2px 5px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  }
+}
+.title {
+  text-align: center;
+  font-size: 30px;
+}
+.collection {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  .post {
+    width: 33%;
+  }
+}

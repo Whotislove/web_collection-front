@@ -1,0 +1,22 @@
+import { Card, CardActionArea, CardMedia, Typography } from '@mui/material';
+import React from 'react';
+import styles from './Post.module.scss';
+const Post = ({ title, description, image }) => {
+  return (
+    <div className={styles.root}>
+      <Card>
+        <CardActionArea>
+          <CardMedia component="img" sx={{ height: 200 }} image={image} alt="hryak" />
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardActionArea>
+      </Card>
+    </div>
+  );
+};
+
+export default Post;

@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <Header />
-      <Container maxWidth="lg" sx={{ bgcolor: 'white' }}>
+      <Container maxWidth="lg" sx={{ bgcolor: 'white', marginTop: '10px', borderRadius: '8px' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
