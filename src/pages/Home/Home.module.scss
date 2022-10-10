@@ -39,6 +39,9 @@
       padding: 2px 5px;
       border-radius: 8px;
       cursor: pointer;
+      &:hover {
+        background-color: #1c3395;
+      }
     }
   }
 }

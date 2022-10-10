@@ -5,18 +5,7 @@
     display: flex;
     justify-content: space-between;
     .logo {
-      background-color: rgb(23, 126, 194);
-      color: aliceblue;
-      font-weight: 700;
-      padding: 10px 10px;
       text-decoration: none;
-      border-radius: 5px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      transition: 0.5s ease-out;
-      &:hover {
-        background-color: #1c3395;
-      }
     }
     .buttons {
       .ifAuth {

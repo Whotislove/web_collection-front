@@ -104,7 +104,7 @@ const Home = () => {
           <span className={styles.article}>Тэги</span>
           <div className={styles.tags_container}>
             {tags.map((e, i) => (
-              <div className={styles.tag}>{`#${e}`}</div>
+              <div key={i} className={styles.tag}>{`#${e}`}</div>
             ))}
           </div>
         </div>
@@ -112,8 +112,8 @@ const Home = () => {
       <p className={styles.title}>Коллекции</p>
       <div className={styles.collection}>
         {arr2.map((e, id) => (
-          <div className={styles.post}>
-            <Post key={id} title={e.title} description={e.description} image={e.image} />
+          <div key={id} className={styles.post}>
+            <Post title={e.title} description={e.description} image={e.image} />
           </div>
         ))}
       </div>

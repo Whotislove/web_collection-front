@@ -1,20 +1,21 @@
 import { Button } from '@mui/material';
 import { Container } from '@mui/system';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Search from '../Search/Search';
 import styles from './Header.module.scss';
 
 function Header() {
+  const location = useLocation();
   const [isAuth, setIsAuth] = React.useState(false);
   return (
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.wrapper}>
           <Link to="/" className={styles.logo}>
-            Web Collection
+            <Button variant="contained">Web Collection</Button>
           </Link>
-          <Search />
+          {location.pathname !== '/login' && location.pathname !== '/register' && <Search />}
           <div className={styles.buttons}>
             {isAuth ? (
               <div className={styles.ifAuth}>
