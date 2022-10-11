@@ -1,9 +1,12 @@
 import React from 'react';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Typography } from '@mui/material';
 import styles from './Register.module.scss';
 function Register() {
   return (
     <div className={styles.root}>
+      <Typography classes={{ root: styles.title }} variant="h5">
+        Регистрация
+      </Typography>
       <TextField
         className={styles.field}
         label="Name"

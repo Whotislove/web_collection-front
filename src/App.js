@@ -5,8 +5,9 @@ import './App.scss';
 import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
-import Collection from './pages/Collection/Collection';
+import MyCollection from './pages/MyCollection/MyCollection';
 import Home from './pages/Home/Home';
+import Collection from './pages/Collection/Collection';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/mycollection" element={<Collection />} />
+          <Route path="/mycollection" element={<MyCollection />} />
+          <Route path="/collection" element={<Collection />} />
         </Routes>
       </Container>
     </>

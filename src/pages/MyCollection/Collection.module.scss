@@ -1,0 +1,17 @@
+.root {
+  padding: 50px;
+  &_title {
+    text-align: center !important;
+    font-weight: bold !important;
+    margin-bottom: 30px !important;
+  }
+  .collection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    .post {
+      width: 33%;
+    }
+  }
+}
