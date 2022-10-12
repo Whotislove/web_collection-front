@@ -3,6 +3,7 @@ import Post from '../../components/Post/Post';
 import styles from './Home.module.scss';
 import { NavigateNext, NavigateBefore } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
 const arr = [
   {
     title: 'hrusha',
@@ -21,40 +22,7 @@ const arr = [
     image: 'https://s13.stc.yc.kpcdn.net/share/i/instagram/B44solahwlo/wr-1280.webp',
   },
 ];
-const arr2 = [
-  {
-    title: 'hrusha',
-    description: 'крутая свинюха на забив пойдет',
-    image:
-      'https://st.depositphotos.com/1039721/2414/i/600/depositphotos_24143701-stock-photo-pig-farm.jpg',
-  },
-  {
-    title: 'sobaka',
-    description: 'eto pes ochen kruyoi imya garik',
-    image: 'https://mobimg.b-cdn.net/v3/fetch/0e/0e26b1b65946ee36fac9605ae67e4ac8.jpeg',
-  },
-  {
-    title: 'kot',
-    description: 'afSKNgosjrgnpoadrngpoerngpoerngporstngpisrn',
-    image: 'https://s13.stc.yc.kpcdn.net/share/i/instagram/B44solahwlo/wr-1280.webp',
-  },
-  {
-    title: 'hrusha',
-    description: 'крутая свинюха на забив пойдет',
-    image:
-      'https://st.depositphotos.com/1039721/2414/i/600/depositphotos_24143701-stock-photo-pig-farm.jpg',
-  },
-  {
-    title: 'sobaka',
-    description: 'eto pes ochen kruyoi imya garik',
-    image: 'https://mobimg.b-cdn.net/v3/fetch/0e/0e26b1b65946ee36fac9605ae67e4ac8.jpeg',
-  },
-  {
-    title: 'kot',
-    description: 'afSKNgosjrgnpoadrngpoerngpoerngporstngpisrn',
-    image: 'https://s13.stc.yc.kpcdn.net/share/i/instagram/B44solahwlo/wr-1280.webp',
-  },
-];
+
 const tags = [
   'kotiki',
   'sobachki',
@@ -74,6 +42,8 @@ const tags = [
   'cherepasshki',
 ];
 const Home = () => {
+  const { collections } = useSelector((state) => state.collections);
+  // const dispatch = useDispatch();
   const [number, setNumber] = React.useState(0);
   const onClickBefore = () => {
     setNumber(number === 0 ? arr.length - 1 : number - 1);
@@ -111,7 +81,7 @@ const Home = () => {
       </div>
       <p className={styles.title}>Коллекции</p>
       <div className={styles.collection}>
-        {arr2.map((e, id) => (
+        {collections.map((e, id) => (
           <div key={id} className={styles.post}>
             <Post title={e.title} description={e.description} image={e.image} />
           </div>

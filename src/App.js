@@ -8,6 +8,7 @@ import Register from './components/Register/Register';
 import MyCollection from './pages/MyCollection/MyCollection';
 import Home from './pages/Home/Home';
 import Collection from './pages/Collection/Collection';
+import Item from './pages/Item/Item';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/mycollection" element={<MyCollection />} />
           <Route path="/collection" element={<Collection />} />
+          <Route path="/item:id" element={<Item />} />
         </Routes>
       </Container>
     </>
