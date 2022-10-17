@@ -1,5 +1,6 @@
 import { Add } from '@mui/icons-material';
 import { Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import Post from '../../components/Post/Post';
 import styles from './Collection.module.scss';
@@ -51,7 +52,9 @@ function Collection() {
       <div className={styles.collection}>
         {arr2.map((e, id) => (
           <div key={id} className={styles.post}>
-            <Post title={e.title} description={e.description} image={e.image} />
+            <Link to="/collection" className={styles.link}>
+              <Post title={e.title} description={e.description} image={e.image} />
+            </Link>
           </div>
         ))}
       </div>

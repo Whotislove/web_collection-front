@@ -10,3 +10,21 @@
 .icon {
   margin-left: 20px;
 }
+.comments {
+  &_send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &_message {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+.content {
+  position: relative;
+}

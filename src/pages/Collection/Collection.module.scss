@@ -24,4 +24,18 @@
 }
 .item {
   font-weight: bold !important;
+  &_content {
+    display: flex;
+    justify-content: space-between;
+  }
+  &_wrapper {
+    width: 60%;
+  }
+  &_buttons {
+    margin-top: 20px;
+    text-align: end;
+    &_open {
+      text-decoration: none;
+    }
+  }
 }

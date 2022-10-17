@@ -19,7 +19,9 @@ function Header() {
           <div className={styles.buttons}>
             {isAuth ? (
               <div className={styles.ifAuth}>
-                <div className={styles.name}>Залупкин</div>
+                <Link to="/mycollection">
+                  <div className={styles.name}>Залупкин</div>
+                </Link>
                 <Button variant="contained" onClick={() => setIsAuth(false)}>
                   Выйти
                 </Button>

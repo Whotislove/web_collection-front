@@ -17,11 +17,11 @@ function App() {
       <Container maxWidth="lg" sx={{ bgcolor: 'white', marginTop: '10px', borderRadius: '8px' }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/mycollection" element={<MyCollection />} />
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/item:id" element={<Item />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="mycollection" element={<MyCollection />} />
+          <Route path="collection" element={<Collection />} />
+          <Route path="item/:id" element={<Item />} />
         </Routes>
       </Container>
     </>
