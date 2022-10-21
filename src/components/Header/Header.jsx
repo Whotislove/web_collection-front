@@ -4,10 +4,20 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Search from '../Search/Search';
 import styles from './Header.module.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { logOut } from '../../redux/slices/user';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const onClickOut = () => {
+    dispatch(logOut());
+    window.localStorage.removeItem('token');
+    navigate('/');
+  };
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
-  const [isAuth, setIsAuth] = React.useState(false);
   return (
     <div className={styles.root}>
       <Container maxWidth="lg">
@@ -17,26 +27,22 @@ function Header() {
           </Link>
           {location.pathname !== '/login' && location.pathname !== '/register' && <Search />}
           <div className={styles.buttons}>
-            {isAuth ? (
+            {!!Object.keys(user).length ? (
               <div className={styles.ifAuth}>
                 <Link to="/mycollection">
-                  <div className={styles.name}>Залупкин</div>
+                  <div className={styles.name}>{user.fullName}</div>
                 </Link>
-                <Button variant="contained" onClick={() => setIsAuth(false)}>
+                <Button variant="contained" onClick={() => onClickOut()}>
                   Выйти
                 </Button>
               </div>
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outlined" onClick={() => setIsAuth(true)}>
-                    Войти
-                  </Button>
+                  <Button variant="outlined">Войти</Button>
                 </Link>
                 <Link to="/register">
-                  <Button variant="contained" onClick={() => setIsAuth(true)}>
-                    Зарегистрироваться
-                  </Button>{' '}
+                  <Button variant="contained">Зарегистрироваться</Button>{' '}
                 </Link>
               </>
             )}
