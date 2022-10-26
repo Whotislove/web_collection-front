@@ -4,43 +4,14 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import Post from '../../components/Post/Post';
 import styles from './Collection.module.scss';
-
-const arr2 = [
-  {
-    title: 'hrusha',
-    description: 'крутая свинюха на забив пойдет',
-    image:
-      'https://st.depositphotos.com/1039721/2414/i/600/depositphotos_24143701-stock-photo-pig-farm.jpg',
-  },
-  {
-    title: 'sobaka',
-    description: 'eto pes ochen kruyoi imya garik',
-    image: 'https://mobimg.b-cdn.net/v3/fetch/0e/0e26b1b65946ee36fac9605ae67e4ac8.jpeg',
-  },
-  {
-    title: 'kot',
-    description: 'afSKNgosjrgnpoadrngpoerngpoerngporstngpisrn',
-    image: 'https://s13.stc.yc.kpcdn.net/share/i/instagram/B44solahwlo/wr-1280.webp',
-  },
-  {
-    title: 'hrusha',
-    description: 'крутая свинюха на забив пойдет',
-    image:
-      'https://st.depositphotos.com/1039721/2414/i/600/depositphotos_24143701-stock-photo-pig-farm.jpg',
-  },
-  {
-    title: 'sobaka',
-    description: 'eto pes ochen kruyoi imya garik',
-    image: 'https://mobimg.b-cdn.net/v3/fetch/0e/0e26b1b65946ee36fac9605ae67e4ac8.jpeg',
-  },
-  {
-    title: 'kot',
-    description: 'afSKNgosjrgnpoadrngpoerngpoerngporstngpisrn',
-    image: 'https://s13.stc.yc.kpcdn.net/share/i/instagram/B44solahwlo/wr-1280.webp',
-  },
-];
+import axios from '../../axios';
 
 function Collection() {
+  const [data, setData] = React.useState([]);
+  const dataLength = data.length === 0;
+  React.useEffect(() => {
+    axios.get('/mycollection').then((res) => setData(res.data));
+  }, []);
   return (
     <div className={styles.root}>
       <Typography classes={{ root: styles.root_title }} variant="h4">
@@ -50,13 +21,17 @@ function Collection() {
         Добавить коллекцию
       </Button>
       <div className={styles.collection}>
-        {arr2.map((e, id) => (
-          <div key={id} className={styles.post}>
-            <Link to="/collection" className={styles.link}>
-              <Post title={e.title} description={e.description} image={e.image} />
-            </Link>
-          </div>
-        ))}
+        {dataLength ? (
+          <>Загрузка</>
+        ) : (
+          data.map((e, id) => (
+            <div key={id} className={styles.post}>
+              <Link to={`/collection/${e._id}`} className={styles.link}>
+                <Post title={e.title} type={e.type} image={e.image} />
+              </Link>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

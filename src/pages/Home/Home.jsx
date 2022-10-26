@@ -3,25 +3,9 @@ import Post from '../../components/Post/Post';
 import styles from './Home.module.scss';
 import { NavigateNext, NavigateBefore } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux/es/exports';
-const arr = [
-  {
-    title: 'hrusha',
-    description: 'крутая свинюха на забив пойдет',
-    image:
-      'https://st.depositphotos.com/1039721/2414/i/600/depositphotos_24143701-stock-photo-pig-farm.jpg',
-  },
-  {
-    title: 'sobaka',
-    description: 'eto pes ochen kruyoi imya garik',
-    image: 'https://mobimg.b-cdn.net/v3/fetch/0e/0e26b1b65946ee36fac9605ae67e4ac8.jpeg',
-  },
-  {
-    title: 'kot',
-    description: 'afSKNgosjrgnpoadrngpoerngpoerngporstngpisrn',
-    image: 'https://s13.stc.yc.kpcdn.net/share/i/instagram/B44solahwlo/wr-1280.webp',
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCollections } from '../../redux/slices/collections';
+import { Link } from 'react-router-dom';
 
 const tags = [
   'kotiki',
@@ -42,25 +26,36 @@ const tags = [
   'cherepasshki',
 ];
 const Home = () => {
-  const { collections } = useSelector((state) => state.collections);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(fetchCollections());
+  }, []);
+  const { collections, biggest, status } = useSelector((state) => state.collections);
+  const isLoading = status === 'loaded';
   const [number, setNumber] = React.useState(0);
   const onClickBefore = () => {
-    setNumber(number === 0 ? arr.length - 1 : number - 1);
+    setNumber(number === 0 ? biggest.length - 1 : number - 1);
   };
   const onClickNext = () => {
-    setNumber(number === arr.length - 1 ? 0 : number + 1);
+    setNumber(number === biggest.length - 1 ? 0 : number + 1);
   };
   return (
     <div className={styles.parent}>
       <div className={styles.top}>
         <div className={styles.popular}>
           <span className={styles.article}>Популярные коллекции</span>
-          <Post
-            title={arr[number].title}
-            description={arr[number].description}
-            image={arr[number].image}
-          />
+          {isLoading ? (
+            <Link to={`/collection/${biggest[number]._id}`} className={styles.link}>
+              <Post
+                title={biggest[number].title}
+                type={biggest[number].type}
+                image={biggest[number].image}
+                id={biggest[number]._id}
+              />
+            </Link>
+          ) : (
+            <>Загрузка</>
+          )}
           <div className={styles.underSlider}>
             <Button sx={{ color: 'black', borderRadius: 50 }} onClick={() => onClickBefore()}>
               <NavigateBefore sx={{ fontSize: 50, cursor: 'pointer' }} />
@@ -83,7 +78,9 @@ const Home = () => {
       <div className={styles.collection}>
         {collections.map((e, id) => (
           <div key={id} className={styles.post}>
-            <Post title={e.title} description={e.description} image={e.image} />
+            <Link to={`/collection/${e._id}`} className={styles.link}>
+              <Post title={e.title} type={e.type} image={e.image} id={e._id} />
+            </Link>
           </div>
         ))}
       </div>

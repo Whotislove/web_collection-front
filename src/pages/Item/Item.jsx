@@ -2,53 +2,110 @@ import { Typography, TextField, Button, Box } from '@mui/material';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './Item.module.scss';
-import { Edit, Done } from '@mui/icons-material';
+import { Edit, Done, AddComment } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
-import { addComment, updateItem } from '../../redux/slices/item';
 import fullDate from '../../components/Date';
+import axios from '../../axios';
 function Item() {
   const [isChange, setChange] = React.useState(false);
   const [value, setValue] = React.useState('');
-  const { rows } = useSelector((state) => state.item);
+  const [data, setData] = React.useState();
+  const [isLoading, setLoading] = React.useState(true);
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const number = id.slice(1) - 1;
-  const comments = rows[number].comments;
-  const [name, setName] = React.useState(rows[number].name);
-  const [type, setType] = React.useState(rows[number].type);
-  const [tags, setTags] = React.useState(rows[number].tags);
+  const { collectionId, itemId } = useParams();
+  const [name, setName] = React.useState();
+  const [type, setType] = React.useState();
+  const [tags, setTags] = React.useState([]);
+  const { isAuth, user } = useSelector((state) => state.user);
+  React.useEffect(() => {
+    axios
+      .get(`/collection/${collectionId}/item/${itemId}`)
+      .then((res) => {
+        setData(res.data);
+        setLoading(false);
+        setName(res.data.name);
+        setType(res.data.type);
+        setTags(res.data.tags);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ошибка получения статьи');
+      });
+  }, []);
+  const addComment = async () => {
+    const first = await axios
+      .patch(`/collection/${collectionId}/itemComment/${itemId}`, {
+        name: user.fullName,
+        date: fullDate(),
+        text: value,
+      })
+      .then((res) => setValue(''))
+      .catch((err) => {
+        console.log(err);
+        alert('Ошибка');
+      });
+    const second = await axios
+      .get(`/collection/${collectionId}/item/${itemId}`)
+      .then((res) => {
+        setData(res.data);
+        setLoading(false);
+        setName(res.data.name);
+        setType(res.data.type);
+        setTags(res.data.tags);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ошибка получения статьи');
+      });
+  };
+  const updateItem = async (values) => {
+    const first = await axios
+      .patch(`/collection/${collectionId}/item/${itemId}`, values)
+      .catch((error) => {
+        console.log(error);
+        alert('Не удалось обновить предмет');
+      });
+  };
   return (
     <div className={styles.root}>
       <div className={styles.content}>
-        {isChange ? (
-          <Button
-            sx={{ position: 'absolute', left: '80%' }}
-            startIcon={<Done />}
-            variant="contained"
-            onClick={() => {
-              dispatch(updateItem({ id: number, name: name, type: type, tags: tags }));
-              setChange(false);
-            }}>
-            Сохранить
-          </Button>
-        ) : (
-          <Button
-            sx={{ position: 'absolute', left: '80%' }}
-            startIcon={<Edit />}
-            variant="contained"
-            onClick={() => setChange(true)}>
-            Редактировать
-          </Button>
-        )}
+        {isAuth &&
+          (isChange ? (
+            <Button
+              sx={{ position: 'absolute', left: '80%' }}
+              startIcon={<Done />}
+              variant="contained"
+              onClick={() => {
+                updateItem({
+                  name: name,
+                  type: type,
+                  tags: typeof tags === 'string' ? tags.split(',') : tags,
+                });
+
+                setChange(false);
+              }}>
+              Сохранить
+            </Button>
+          ) : (
+            <Button
+              sx={{ position: 'absolute', left: '80%' }}
+              startIcon={<Edit />}
+              variant="contained"
+              onClick={() => setChange(true)}>
+              Редактировать
+            </Button>
+          ))}
         <Typography classes={{ root: styles.title }} variant="h4">
-          Имя
+          Название
         </Typography>
         <Typography classes={{ root: styles.description }} variant="body1">
           {isChange ? (
             <TextField value={name} onChange={(e) => setName(e.target.value)} />
+          ) : isLoading ? (
+            <>Загрузка</>
           ) : (
-            rows[number].name
+            name
           )}
         </Typography>
         <Typography classes={{ root: styles.title }} variant="h4">
@@ -57,8 +114,10 @@ function Item() {
         <Typography classes={{ root: styles.description }} variant="body1">
           {isChange ? (
             <TextField value={type} onChange={(e) => setType(e.target.value)} />
+          ) : isLoading ? (
+            <>Загрузка</>
           ) : (
-            rows[number].type
+            type
           )}
         </Typography>
         <Typography classes={{ root: styles.title }} variant="h4">
@@ -66,9 +125,15 @@ function Item() {
         </Typography>
         <Typography classes={{ root: styles.description }} variant="body1">
           {isChange ? (
-            <TextField value={tags} onChange={(e) => setTags(e.target.value)} />
+            <TextField value={tags} onChange={(e) => setTags(e.target.value.split(','))} />
+          ) : isLoading ? (
+            <>Загрузка</>
           ) : (
-            rows[number].tags
+            <div className={styles.tags_container}>
+              {tags.map((e, i) => (
+                <div key={i} className={styles.tag}>{`#${e}`}</div>
+              ))}
+            </div>
           )}
         </Typography>
       </div>
@@ -89,8 +154,7 @@ function Item() {
           />
           <Button
             onClick={() => {
-              dispatch(addComment({ id: number, name: 'yarik', text: value, date: fullDate() }));
-              setValue('');
+              addComment();
             }}
             disabled={value.length === 0}
             fontSize="large"
@@ -107,30 +171,36 @@ function Item() {
             marginTop: 4,
             borderRadius: '8px',
           }}>
-          {comments.length === 0 ? (
-            <>Ещё никто не комментировал данный предмет, будьте первым!</>
-          ) : (
-            comments.map((e, i) => (
-              <Box
-                key={i}
-                sx={{
-                  backgroundColor: 'white',
-                  padding: 2.5,
-                  marginTop: 4,
-                  borderRadius: '8px',
-                }}>
-                <div className={styles.header}>
-                  <Typography variant="h4">{e.name}</Typography>
-                  <Typography
-                    sx={{ marginLeft: 1.25, opacity: 0.6, fontSize: '14px' }}
-                    variant="h6">
-                    {e.date}
-                  </Typography>
-                </div>
+          {isLoading ? (
+            <>Загрузка</>
+          ) : isAuth ? (
+            data.comments.length === 0 ? (
+              <>Ещё никто не комментировал данный предмет, будьте первым!</>
+            ) : (
+              data.comments.map((e, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    backgroundColor: 'white',
+                    padding: 2.5,
+                    marginTop: 4,
+                    borderRadius: '8px',
+                  }}>
+                  <div className={styles.header}>
+                    <Typography variant="h4">{e.name}</Typography>
+                    <Typography
+                      sx={{ marginLeft: 1.25, opacity: 0.6, fontSize: '14px' }}
+                      variant="h6">
+                      {e.date}
+                    </Typography>
+                  </div>
 
-                <Typography variant="body1">{e.text}</Typography>
-              </Box>
-            ))
+                  <Typography variant="body1">{e.text}</Typography>
+                </Box>
+              ))
+            )
+          ) : (
+            <>Комментарии могут оставлять только авторизированные пользователи</>
           )}
         </Box>
       </div>

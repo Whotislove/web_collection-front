@@ -9,8 +9,20 @@ import MyCollection from './pages/MyCollection/MyCollection';
 import Home from './pages/Home/Home';
 import Collection from './pages/Collection/Collection';
 import Item from './pages/Item/Item';
+import { useDispatch } from 'react-redux';
+import { addUserInfo } from './redux/slices/user';
+import React from 'react';
+import axios from './axios';
 
 function App() {
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    async function getMe() {
+      const { data } = await axios.get('/me');
+      dispatch(addUserInfo(data));
+    }
+    getMe();
+  });
   return (
     <>
       <Header />
@@ -20,8 +32,8 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="mycollection" element={<MyCollection />} />
-          <Route path="collection" element={<Collection />} />
-          <Route path="item/:id" element={<Item />} />
+          <Route path="collection/:id" element={<Collection />} />
+          <Route path="collection/:collectionId/item/:itemId" element={<Item />} />
         </Routes>
       </Container>
     </>

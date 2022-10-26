@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardMedia, Typography } from '@mui/material';
 import React from 'react';
 import styles from './Post.module.scss';
-const Post = ({ title, description, image }) => {
+const Post = ({ title, type, image }) => {
   return (
     <div className={styles.root}>
       <Card>
@@ -11,7 +11,7 @@ const Post = ({ title, description, image }) => {
             {title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {description}
+            {type}
           </Typography>
         </CardActionArea>
       </Card>
