@@ -1,8 +1,8 @@
 .root {
   padding: 50px;
+  position: relative;
 }
 .title {
-  text-align: center !important;
   font-weight: bold !important;
   margin-bottom: 30px !important;
   &_description {
@@ -19,7 +19,6 @@
   word-wrap: break-word;
 }
 .theme {
-  text-align: center;
   margin-bottom: 20px !important;
 }
 .item {
@@ -38,4 +37,11 @@
       text-decoration: none;
     }
   }
+}
+.top_buttons {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  left: 60%;
+  top: 4%;
 }

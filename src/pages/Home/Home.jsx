@@ -49,7 +49,7 @@ const Home = () => {
               <Post
                 title={biggest[number].title}
                 type={biggest[number].type}
-                image={biggest[number].image}
+                image={biggest[number].imageUrl}
                 id={biggest[number]._id}
               />
             </Link>
@@ -79,7 +79,7 @@ const Home = () => {
         {collections.map((e, id) => (
           <div key={id} className={styles.post}>
             <Link to={`/collection/${e._id}`} className={styles.link}>
-              <Post title={e.title} type={e.type} image={e.image} id={e._id} />
+              <Post title={e.title} type={e.type} image={e.imageUrl} id={e._id} />
             </Link>
           </div>
         ))}

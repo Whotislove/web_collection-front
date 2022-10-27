@@ -1,13 +1,14 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { Delete, PendingActionsOutlined } from '@mui/icons-material';
+import { Delete, Edit, Done } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Collection.module.scss';
 import { DataGrid } from '@mui/x-data-grid';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import axios from '../../axios';
+import ReactMarkdown from 'react-markdown';
 const columns = [
   { field: 'id', headerName: 'Id', width: 90 },
   { field: 'name', headerName: 'Название', width: 150 },
@@ -16,13 +17,15 @@ const columns = [
 ];
 
 function Collection() {
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = React.useState({});
   const [isSelect, setIsSelect] = React.useState([]);
   const [data, setData] = React.useState({});
   const [items, setItems] = React.useState([]);
   const [isLoading, setLoading] = React.useState(true);
   const { id } = useParams();
-  const { user } = useSelector((state) => state.user);
+  const { user, isAuth } = useSelector((state) => state.user);
+  console.log(data);
   React.useEffect(() => {
     axios
       .get(`/collection/${id}`)
@@ -84,6 +87,17 @@ function Collection() {
         alert('Ошибка получения предметов');
       });
   };
+  const deleteCollection = () => {
+    try {
+      if (window.confirm('Вы действительно хотите удалить коллекцию?')) {
+        axios.delete(`collection/${id}`);
+        navigate('/');
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   if (isLoading) {
     return <>ЗАГРУЗКА</>;
   }
@@ -92,15 +106,37 @@ function Collection() {
       <Typography classes={{ root: styles.title }} variant="h4">
         {data.title}
       </Typography>
+      {isAuth && (user.status === 'admin' || data.user === user._id) && (
+        <div className={styles.top_buttons}>
+          <Button
+            variant="contained"
+            startIcon={<Edit />}
+            onClick={() => navigate(`/collection/${id}/edit`)}>
+            Редактировать
+          </Button>
+
+          <Button
+            variant="contained"
+            startIcon={<Delete />}
+            color="error"
+            onClick={deleteCollection}>
+            Удалить коллекцию
+          </Button>
+        </div>
+      )}
       <Typography classes={{ root: styles.theme }} variant="h6">
         {data.type}
       </Typography>
-      <img className={styles.image} src={data.image} alt="cover" />
+      <img
+        className={styles.image}
+        src={`${process.env.REACT_APP_API_URL}${data.imageUrl}`}
+        alt="cover"
+      />
       <Typography classes={{ root: styles.title_description }} variant="h4">
         Описание
       </Typography>
       <Typography classes={{ root: styles.description }} variant="body1">
-        {data.description}
+        <ReactMarkdown>{data.description}</ReactMarkdown>
       </Typography>
       <Typography classes={{ root: styles.item }} variant="h4">
         Предметы
@@ -125,18 +161,19 @@ function Collection() {
                   Открыть
                 </Button>
               </Link>
-              {Boolean(Object.keys(user).length) && (
+              {isAuth && (user.status === 'admin' || data.user === user._id) && (
                 <Button
                   variant="contained"
                   startIcon={<Delete />}
-                  onClick={() => deleteItem(selectedItem._id)}>
+                  onClick={() => deleteItem(selectedItem._id)}
+                  color="error">
                   Удалить
                 </Button>
               )}
             </div>
           )}
         </div>
-        {Boolean(Object.keys(user).length) && (
+        {isAuth && (user.status === 'admin' || data.user === user._id) && (
           <Box sx={{ width: '30%', textAlign: 'center' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextField

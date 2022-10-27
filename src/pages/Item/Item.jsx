@@ -2,7 +2,7 @@ import { Typography, TextField, Button, Box } from '@mui/material';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './Item.module.scss';
-import { Edit, Done, AddComment } from '@mui/icons-material';
+import { Edit, Done } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import fullDate from '../../components/Date';

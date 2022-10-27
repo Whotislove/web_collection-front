@@ -2,11 +2,12 @@ import React from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import styles from './Register.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import axios from '../../axios';
 import { addUserInfo } from '../../redux/slices/user';
 function Register() {
+  const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -34,6 +35,9 @@ function Register() {
       navigate('/');
     }
   };
+  if (isAuth) {
+    navigate('/');
+  }
   return (
     <div className={styles.root}>
       <Typography classes={{ root: styles.title }} variant="h5">

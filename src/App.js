@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { addUserInfo } from './redux/slices/user';
 import React from 'react';
 import axios from './axios';
+import { AddCollection } from './pages/AddCollection/AddCollection';
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ function App() {
           <Route path="mycollection" element={<MyCollection />} />
           <Route path="collection/:id" element={<Collection />} />
           <Route path="collection/:collectionId/item/:itemId" element={<Item />} />
+          <Route path="addcollection" element={<AddCollection />} />
+          <Route path="collection/:id/edit" element={<AddCollection />} />
         </Routes>
       </Container>
     </>

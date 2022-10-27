@@ -1,12 +1,13 @@
 import React from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import styles from './Login.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import axios from '../../axios';
 import { addUserInfo } from '../../redux/slices/user';
 const Login = () => {
+  const { isAuth } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -33,6 +34,9 @@ const Login = () => {
       navigate('/');
     }
   };
+  if (isAuth) {
+    navigate('/');
+  }
   return (
     <div className={styles.root}>
       <Typography classes={{ root: styles.title }} variant="h5">

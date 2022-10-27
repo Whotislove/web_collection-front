@@ -6,7 +6,12 @@ const Post = ({ title, type, image }) => {
     <div className={styles.root}>
       <Card>
         <CardActionArea>
-          <CardMedia component="img" sx={{ height: 200 }} image={image} alt="hryak" />
+          <CardMedia
+            component="img"
+            sx={{ height: 200 }}
+            image={`${process.env.REACT_APP_API_URL}${image}`}
+            alt="hryak"
+          />
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
