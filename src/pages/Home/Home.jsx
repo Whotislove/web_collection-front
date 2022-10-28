@@ -31,7 +31,11 @@ const Home = () => {
     dispatch(fetchCollections());
   }, []);
   const { collections, biggest, status } = useSelector((state) => state.collections);
+  const { theme, language } = useSelector((state) => state.user);
+  const isEn = language === 'en';
   const isLoading = status === 'loaded';
+  const isLight = theme === 'light';
+  const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   const [number, setNumber] = React.useState(0);
   const onClickBefore = () => {
     setNumber(number === 0 ? biggest.length - 1 : number - 1);
@@ -43,7 +47,9 @@ const Home = () => {
     <div className={styles.parent}>
       <div className={styles.top}>
         <div className={styles.popular}>
-          <span className={styles.article}>Популярные коллекции</span>
+          <span className={isLight ? styles.article_light : styles.article_dark}>
+            {isEn ? <>The largest collections</> : <>Самые большие коллекции</>}
+          </span>
           {isLoading ? (
             <Link to={`/collection/${biggest[number]._id}`} className={styles.link}>
               <Post
@@ -53,20 +59,24 @@ const Home = () => {
                 id={biggest[number]._id}
               />
             </Link>
+          ) : isEn ? (
+            <>Loading</>
           ) : (
             <>Загрузка</>
           )}
           <div className={styles.underSlider}>
-            <Button sx={{ color: 'black', borderRadius: 50 }} onClick={() => onClickBefore()}>
+            <Button sx={{ color: color, borderRadius: 50 }} onClick={() => onClickBefore()}>
               <NavigateBefore sx={{ fontSize: 50, cursor: 'pointer' }} />
             </Button>
-            <Button sx={{ color: 'black', borderRadius: 50 }} onClick={() => onClickNext()}>
+            <Button sx={{ color: color, borderRadius: 50 }} onClick={() => onClickNext()}>
               <NavigateNext sx={{ fontSize: 50, cursor: 'pointer' }} />
             </Button>
           </div>
         </div>
         <div className={styles.tags}>
-          <span className={styles.article}>Тэги</span>
+          <span className={isLight ? styles.article_light : styles.article_dark}>
+            {isEn ? <>Tags</> : <>Тэги</>}
+          </span>
           <div className={styles.tags_container}>
             {tags.map((e, i) => (
               <div key={i} className={styles.tag}>{`#${e}`}</div>
@@ -74,7 +84,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <p className={styles.title}>Коллекции</p>
+      <p className={isLight ? styles.title_light : styles.title_dark}>
+        {isEn ? <>Collections</> : <>Коллекции</>}
+      </p>
       <div className={styles.collection}>
         {collections.map((e, id) => (
           <div key={id} className={styles.post}>

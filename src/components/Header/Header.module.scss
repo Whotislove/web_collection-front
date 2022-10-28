@@ -1,4 +1,5 @@
-.root {
+.root_light {
+  transition: 1s;
   padding: 10px 0;
   background-color: aliceblue;
   .wrapper {
@@ -8,11 +9,87 @@
       text-decoration: none;
     }
     .buttons {
+      display: flex;
+      .language {
+        margin-right: 8px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: 1s;
+        user-select: none;
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+      .icon {
+        &_light {
+          margin-right: 8px;
+          margin-top: 6px;
+          cursor: pointer;
+          transition: 1s;
+          &:hover {
+            color: blue;
+            transform: scale(1.2);
+          }
+        }
+      }
       .ifAuth {
         display: flex;
-        .name {
+        .name_light {
           font-weight: 700;
           color: #1c3395;
+          line-height: 35px;
+        }
+      }
+      button {
+        margin-left: 10px;
+      }
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
+.root_dark {
+  padding: 10px 0;
+  background-color: rgb(10, 25, 41);
+  transition: 1s;
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    .logo {
+      text-decoration: none;
+    }
+    .buttons {
+      display: flex;
+      .language {
+        margin-right: 8px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: 1s;
+        user-select: none;
+        color: white;
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+      .icon {
+        &_dark {
+          color: white;
+          margin-right: 8px;
+          margin-top: 6px;
+          cursor: pointer;
+          transition: 1s;
+          &:hover {
+            color: orange;
+            transform: scale(1.2);
+          }
+        }
+      }
+      .ifAuth {
+        display: flex;
+        .name_dark {
+          font-weight: 700;
+          color: white;
           line-height: 35px;
         }
       }

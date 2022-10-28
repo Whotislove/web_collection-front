@@ -5,12 +5,21 @@
     flex-direction: row;
   }
 }
-.article {
+.article_light {
   position: relative;
   font-size: 24px;
   font-weight: 500;
   top: 1%;
   left: 3%;
+  color: rgb(24, 10, 106);
+}
+.article_dark {
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  top: 1%;
+  left: 3%;
+  color: white;
 }
 .popular {
   grid-area: 1 / 1 / 2 / 2;
@@ -45,9 +54,15 @@
     }
   }
 }
-.title {
+.title_light {
   text-align: center;
   font-size: 30px;
+  color: rgb(24, 10, 106);
+}
+.title_dark {
+  text-align: center;
+  font-size: 30px;
+  color: white;
 }
 .collection {
   display: flex;

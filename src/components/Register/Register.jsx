@@ -7,7 +7,9 @@ import { useForm } from 'react-hook-form';
 import axios from '../../axios';
 import { addUserInfo } from '../../redux/slices/user';
 function Register() {
-  const { isAuth } = useSelector((state) => state.user);
+  const { isAuth, theme, language } = useSelector((state) => state.user);
+  const isEn = language === 'en';
+  const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -40,8 +42,8 @@ function Register() {
   }
   return (
     <div className={styles.root}>
-      <Typography classes={{ root: styles.title }} variant="h5">
-        Регистрация
+      <Typography classes={{ root: styles.title }} variant="h5" sx={{ color }}>
+        {isEn ? <>Registration</> : <>Регистрация</>}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -49,6 +51,7 @@ function Register() {
           label="Name"
           variant="outlined"
           error={Boolean(errors.fullName?.message)}
+          sx={{ bgcolor: 'white', borderRadius: '8px' }}
           helperText={errors.fullName?.message}
           {...register('fullName', { required: 'Укажите имя' })}
           fullWidth
@@ -59,6 +62,7 @@ function Register() {
           label="Email"
           variant="outlined"
           error={Boolean(errors.email?.message)}
+          sx={{ bgcolor: 'white', borderRadius: '8px' }}
           helperText={errors.email?.message}
           {...register('email', { required: 'Укажите почту' })}
           fullWidth
@@ -68,12 +72,13 @@ function Register() {
           label="Password"
           variant="outlined"
           error={Boolean(errors.password?.message)}
+          sx={{ bgcolor: 'white', borderRadius: '8px' }}
           helperText={errors.password?.message}
           {...register('password', { required: 'Укажите пароль' })}
           fullWidth
         />
-        <Button disablde={!isValid} type="submit" size="large" variant="contained" fullWidth>
-          Войти
+        <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
+          {isEn ? <>Sign up</> : <>Зарегистрироваться</>}
         </Button>
       </form>
     </div>

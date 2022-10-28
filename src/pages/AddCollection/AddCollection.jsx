@@ -8,6 +8,8 @@ import 'easymde/dist/easymde.min.css';
 import styles from './AddCollection.module.scss';
 import { useSelector } from 'react-redux';
 import { useNavigate, Navigate, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+
 import axios from '../../axios';
 
 export const AddCollection = () => {
@@ -18,7 +20,8 @@ export const AddCollection = () => {
   const [description, setDescription] = React.useState('');
   const [type, setType] = React.useState('');
   const [title, setTitle] = React.useState('');
-  const { isAuth } = useSelector((state) => state.user);
+  const { isAuth, language } = useSelector((state) => state.user);
+  const isEn = language === 'en';
   const inputFileRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -80,13 +83,12 @@ export const AddCollection = () => {
   const onChange = React.useCallback((value) => {
     setDescription(value);
   }, []);
-
   const options = React.useMemo(
     () => ({
       spellChecker: false,
       maxHeight: '400px',
       autofocus: true,
-      placeholder: 'Введите описание...',
+      placeholder: 'Enter a description...',
       status: false,
       autosave: {
         enabled: true,
@@ -102,17 +104,18 @@ export const AddCollection = () => {
   return (
     <Paper style={{ padding: 30 }}>
       <Button onClick={() => inputFileRef.current.click()} variant="outlined" size="large">
-        Загрузить изображение
+        {isEn ? <>Upload Image</> : <>Загрузить изображение</>}
       </Button>
       <input type="file" ref={inputFileRef} onChange={handleChangeFile} hidden />
       {imageUrl && (
         <>
           <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-            Удалить
+            {isEn ? <>Delete</> : <>Удалить</>}
           </Button>
           <img
             className={styles.image}
             src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+            // src={`http://localhost:1111${imageUrl}`}
             alt="Uploaded"
           />
         </>
@@ -123,7 +126,7 @@ export const AddCollection = () => {
       <TextField
         classes={{ root: styles.title }}
         variant="standard"
-        placeholder="Название коллекции..."
+        placeholder={isEn ? 'Collection name...' : 'Название коллекции...'}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         fullWidth
@@ -131,7 +134,7 @@ export const AddCollection = () => {
       <TextField
         sx={{ marginY: 3 }}
         variant="standard"
-        placeholder="Тип коллекции"
+        placeholder={isEn ? 'Collection type' : 'Тип коллекции...'}
         value={type}
         onChange={(e) => setType(e.target.value)}
       />
@@ -145,16 +148,16 @@ export const AddCollection = () => {
       <div className={styles.buttons}>
         {isEditable ? (
           <Button onClick={onSave} size="large" variant="contained">
-            Сохранить
+            {isEn ? <>Save</> : <>Сохранить</>}
           </Button>
         ) : (
           <Button onClick={onSubmit} size="large" variant="contained">
-            Опубликовать коллекцию
+            {isEn ? <>Publish сollection</> : <>Опубликовать коллекцию</>}
           </Button>
         )}
-        <a href="/">
-          <Button size="large">Отмена</Button>
-        </a>
+        <Link to="/" className={styles.link}>
+          <Button size="large">{isEn ? <>Cancel</> : <>Отмена</>}</Button>
+        </Link>
       </div>
     </Paper>
   );

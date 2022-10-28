@@ -8,7 +8,9 @@ import axios from '../../axios';
 import { useSelector } from 'react-redux';
 
 function Collection() {
-  const { isAuth } = useSelector((state) => state.user);
+  const { isAuth, theme, language } = useSelector((state) => state.user);
+  const isEn = language === 'en';
+  const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   const [data, setData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   React.useEffect(() => {
@@ -20,21 +22,29 @@ function Collection() {
   }
   return (
     <div className={styles.root}>
-      <Typography classes={{ root: styles.root_title }} variant="h4">
-        Моя коллекция
+      <Typography classes={{ root: styles.root_title }} variant="h4" sx={{ color }}>
+        {isEn ? <>My collections</> : <>Мои коллекции</>}
       </Typography>
       <Link to="/addcollection" className={styles.link}>
         {' '}
         <Button variant="outlined" startIcon={<Add />}>
-          Добавить коллекцию
+          {isEn ? <>Add collection</> : <>Добавить коллекцию</>}
         </Button>
       </Link>
 
       <div className={styles.collection}>
         {!isLoading ? (
-          <>Загрузка</>
+          isEn ? (
+            <>Loading...</>
+          ) : (
+            <>Загрузка...</>
+          )
         ) : data.length === 0 ? (
-          <>Вы ещё не добавили ни одной коллекци</>
+          isEn ? (
+            <>You have not added any collections</>
+          ) : (
+            <>Вы не добавили ни одной коллекции</>
+          )
         ) : (
           data.map((e, id) => (
             <div key={id} className={styles.post}>

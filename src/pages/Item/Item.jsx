@@ -12,12 +12,13 @@ function Item() {
   const [value, setValue] = React.useState('');
   const [data, setData] = React.useState();
   const [isLoading, setLoading] = React.useState(true);
-  const dispatch = useDispatch();
   const { collectionId, itemId } = useParams();
   const [name, setName] = React.useState();
   const [type, setType] = React.useState();
   const [tags, setTags] = React.useState([]);
-  const { isAuth, user } = useSelector((state) => state.user);
+  const { isAuth, user, theme, language } = useSelector((state) => state.user);
+  const isEn = language === 'en';
+  const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   React.useEffect(() => {
     axios
       .get(`/collection/${collectionId}/item/${itemId}`)
@@ -85,7 +86,7 @@ function Item() {
 
                 setChange(false);
               }}>
-              Сохранить
+              {isEn ? <>Save</> : <>Сохранить</>}
             </Button>
           ) : (
             <Button
@@ -93,41 +94,65 @@ function Item() {
               startIcon={<Edit />}
               variant="contained"
               onClick={() => setChange(true)}>
-              Редактировать
+              {isEn ? <>Edit</> : <>Редактировать</>}
             </Button>
           ))}
-        <Typography classes={{ root: styles.title }} variant="h4">
-          Название
+        <Typography classes={{ root: styles.title }} sx={{ color }} variant="h4">
+          {isEn ? <>Name</> : <>Название</>}
         </Typography>
-        <Typography classes={{ root: styles.description }} variant="body1">
+        <Typography classes={{ root: styles.description }} sx={{ color }} variant="body1">
           {isChange ? (
-            <TextField value={name} onChange={(e) => setName(e.target.value)} />
+            <TextField
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              sx={{ bgcolor: 'white', borderRadius: '8px' }}
+            />
           ) : isLoading ? (
-            <>Загрузка</>
+            isEn ? (
+              <>Loading</>
+            ) : (
+              <>Загрузка</>
+            )
           ) : (
             name
           )}
         </Typography>
-        <Typography classes={{ root: styles.title }} variant="h4">
-          Тип
+        <Typography classes={{ root: styles.title }} sx={{ color }} variant="h4">
+          {isEn ? <>Type</> : <>Тип</>}
         </Typography>
-        <Typography classes={{ root: styles.description }} variant="body1">
+        <Typography classes={{ root: styles.description }} variant="body1" sx={{ color }}>
           {isChange ? (
-            <TextField value={type} onChange={(e) => setType(e.target.value)} />
+            <TextField
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              sx={{ bgcolor: 'white', borderRadius: '8px' }}
+            />
           ) : isLoading ? (
-            <>Загрузка</>
+            isEn ? (
+              <>Loading</>
+            ) : (
+              <>Загрузка</>
+            )
           ) : (
             type
           )}
         </Typography>
-        <Typography classes={{ root: styles.title }} variant="h4">
-          Тэги
+        <Typography classes={{ root: styles.title }} variant="h4" sx={{ color }}>
+          {isEn ? <>Tags</> : <>Тэги</>}
         </Typography>
-        <Typography classes={{ root: styles.description }} variant="body1">
+        <Typography classes={{ root: styles.description }} variant="body1" sx={{ color }}>
           {isChange ? (
-            <TextField value={tags} onChange={(e) => setTags(e.target.value.split(','))} />
+            <TextField
+              value={tags}
+              onChange={(e) => setTags(e.target.value.split(','))}
+              sx={{ bgcolor: 'white', borderRadius: '8px' }}
+            />
           ) : isLoading ? (
-            <>Загрузка</>
+            isEn ? (
+              <>Loading</>
+            ) : (
+              <>Загрузка</>
+            )
           ) : (
             <div className={styles.tags_container}>
               {tags.map((e, i) => (
@@ -140,28 +165,29 @@ function Item() {
 
       <div className={styles.comments}>
         <Typography
-          sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 2.5 }}
+          sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 2.5, color }}
           variant="h4">
-          Комментарии
+          {isEn ? <>Comments</> : <>Комментарии</>}
         </Typography>
         <div className={styles.comments_send}>
           <TextField
-            placeholder="Оставьте комментарий"
-            sx={{ width: '80%' }}
+            placeholder={isEn ? 'Leave a comment' : 'Оставьте комментарий'}
+            sx={{ width: '80%', bgcolor: 'white', borderRadius: '8px' }}
             value={value}
             multiline
+            disabled={!isAuth || value.length === 0}
             onChange={(e) => setValue(e.target.value)}
           />
           <Button
             onClick={() => {
               addComment();
             }}
-            disabled={value.length === 0}
+            disabled={!isAuth || value.length === 0}
             fontSize="large"
             variant="contained"
             endIcon={<SendIcon />}
             sx={{ marginLeft: 1.5 }}>
-            Отправить
+            {isEn ? <>Send</> : <>Отправить</>}
           </Button>
         </div>
         <Box
@@ -172,10 +198,18 @@ function Item() {
             borderRadius: '8px',
           }}>
           {isLoading ? (
-            <>Загрузка</>
+            isEn ? (
+              <>Loading</>
+            ) : (
+              <>Загрузка</>
+            )
           ) : isAuth ? (
             data.comments.length === 0 ? (
-              <>Ещё никто не комментировал данный предмет, будьте первым!</>
+              isEn ? (
+                <>No one has commented yet, be the first!!!</>
+              ) : (
+                <>Ещё никто не отправил комментарий, будьте первыми!!!</>
+              )
             ) : (
               data.comments.map((e, i) => (
                 <Box
@@ -199,6 +233,8 @@ function Item() {
                 </Box>
               ))
             )
+          ) : isEn ? (
+            <>Comments can be left only by authorized users</>
           ) : (
             <>Комментарии могут оставлять только авторизированные пользователи</>
           )}

@@ -23,7 +23,9 @@ const collectionsSlice = createSlice({
     },
     [fetchCollections.fulfilled]: (state, action) => {
       state.collections = action.payload;
-      state.biggest = action.payload.sort((a, b) => (a.items > b.items ? -1 : 1)).slice(0, 3);
+      state.biggest = action.payload
+        .sort((a, b) => (a.itemsCount > b.itemsCount ? -1 : 1))
+        .slice(0, 3);
       state.status = 'loaded';
     },
     [fetchCollections.rejected]: (state) => {

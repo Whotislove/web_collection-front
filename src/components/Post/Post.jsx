@@ -10,6 +10,7 @@ const Post = ({ title, type, image }) => {
             component="img"
             sx={{ height: 200 }}
             image={`${process.env.REACT_APP_API_URL}${image}`}
+            // image={`http://localhost:1111${image}`}
             alt="hryak"
           />
           <Typography gutterBottom variant="h5" component="div">

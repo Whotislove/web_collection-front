@@ -9,12 +9,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useParams, Navigate } from 'react-router-dom';
 import axios from '../../axios';
 import ReactMarkdown from 'react-markdown';
-const columns = [
-  { field: 'id', headerName: 'Id', width: 90 },
-  { field: 'name', headerName: 'Название', width: 150 },
-  { field: 'type', headerName: 'Тип', width: 120 },
-  { field: 'tags', headerName: 'Тэги', width: 150 },
-];
 
 function Collection() {
   const navigate = useNavigate();
@@ -24,8 +18,9 @@ function Collection() {
   const [items, setItems] = React.useState([]);
   const [isLoading, setLoading] = React.useState(true);
   const { id } = useParams();
-  const { user, isAuth } = useSelector((state) => state.user);
-  console.log(data);
+  const { user, isAuth, theme, language } = useSelector((state) => state.user);
+  const isEn = language === 'en';
+  const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   React.useEffect(() => {
     axios
       .get(`/collection/${id}`)
@@ -48,7 +43,6 @@ function Collection() {
         alert('Ошибка получения предметов');
       });
   }, []);
-  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -99,11 +93,25 @@ function Collection() {
   };
 
   if (isLoading) {
-    return <>ЗАГРУЗКА</>;
+    {
+      isEn ? <>LOADING</> : <>ЗАГРУЗКА</>;
+    }
   }
+  const nameInput = isEn ? 'Enter name' : 'Укажите название';
+  const tagsInput = isEn ? 'Enter tags' : 'Укажите тэги';
+  const typeInput = isEn ? 'Enter type' : 'Укажите тип';
+  const nameInTable = isEn ? 'Name' : 'Название';
+  const tagsInTable = isEn ? 'Tags' : 'Тэги';
+  const typeInTable = isEn ? 'Type' : 'Тип';
+  const columns = [
+    { field: 'id', headerName: 'Id', width: 90 },
+    { field: 'name', headerName: nameInTable, width: 150 },
+    { field: 'type', headerName: typeInTable, width: 120 },
+    { field: 'tags', headerName: tagsInTable, width: 150 },
+  ];
   return (
     <div className={styles.root}>
-      <Typography classes={{ root: styles.title }} variant="h4">
+      <Typography classes={{ root: styles.title }} variant="h4" color={color}>
         {data.title}
       </Typography>
       {isAuth && (user.status === 'admin' || data.user === user._id) && (
@@ -112,7 +120,7 @@ function Collection() {
             variant="contained"
             startIcon={<Edit />}
             onClick={() => navigate(`/collection/${id}/edit`)}>
-            Редактировать
+            {isEn ? <>Edit</> : <>Редактировать</>}
           </Button>
 
           <Button
@@ -120,26 +128,27 @@ function Collection() {
             startIcon={<Delete />}
             color="error"
             onClick={deleteCollection}>
-            Удалить коллекцию
+            {isEn ? <>Delete collection</> : <>Удалить коллекцию</>}
           </Button>
         </div>
       )}
-      <Typography classes={{ root: styles.theme }} variant="h6">
+      <Typography classes={{ root: styles.theme }} variant="h6" color={color}>
         {data.type}
       </Typography>
       <img
         className={styles.image}
         src={`${process.env.REACT_APP_API_URL}${data.imageUrl}`}
+        // src={`http://localhost:1111${data.imageUrl}`}
         alt="cover"
       />
-      <Typography classes={{ root: styles.title_description }} variant="h4">
-        Описание
+      <Typography classes={{ root: styles.title_description }} variant="h4" color={color}>
+        {isEn ? <>Description</> : <>Описание</>}
       </Typography>
-      <Typography classes={{ root: styles.description }} variant="body1">
+      <Typography classes={{ root: styles.description }} variant="body1" color={color}>
         <ReactMarkdown>{data.description}</ReactMarkdown>
       </Typography>
-      <Typography classes={{ root: styles.item }} variant="h4">
-        Предметы
+      <Typography classes={{ root: styles.item }} variant="h4" color={color}>
+        {isEn ? <>Items</> : <>Предметы</>}
       </Typography>
       <div className={styles.item_content}>
         <div className={styles.item_wrapper}>
@@ -151,6 +160,7 @@ function Collection() {
             onRowClick={(data) => setSelectedItem({ id: data.id, _id: data.row._id })}
             rowsPerPageOptions={[5]}
             pageSize={5}
+            sx={{ color }}
           />
           {isSelect.length !== 0 && (
             <div className={styles.item_buttons}>
@@ -158,7 +168,7 @@ function Collection() {
                 className={styles.item_buttons_open}
                 to={`/collection/${id}/item/${selectedItem._id}`}>
                 <Button sx={{ marginRight: 1 }} variant="outlined">
-                  Открыть
+                  {isEn ? <>Open</> : <>Открыть</>}
                 </Button>
               </Link>
               {isAuth && (user.status === 'admin' || data.user === user._id) && (
@@ -167,41 +177,48 @@ function Collection() {
                   startIcon={<Delete />}
                   onClick={() => deleteItem(selectedItem._id)}
                   color="error">
-                  Удалить
+                  {isEn ? <>Delete</> : <>Удалить</>}
                 </Button>
               )}
             </div>
           )}
         </div>
         {isAuth && (user.status === 'admin' || data.user === user._id) && (
-          <Box sx={{ width: '30%', textAlign: 'center' }}>
+          <Box
+            sx={{
+              width: '30%',
+              textAlign: 'center',
+              bgcolor: 'white',
+              padding: 1,
+              borderRadius: '8px',
+            }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
-                label="Название"
+                label={isEn ? 'Name' : 'Название'}
                 margin="normal"
                 variant="outlined"
                 error={Boolean(errors.name?.message)}
                 helperText={errors.name?.message}
-                {...register('name', { required: 'Укажите название' })}
+                {...register('name', { required: nameInput })}
               />
               <TextField
-                label="Тип"
+                label={isEn ? 'Type' : 'Тип'}
                 margin="normal"
                 variant="outlined"
                 error={Boolean(errors.type?.message)}
                 helperText={errors.type?.message}
-                {...register('type', { required: 'Укажите тип' })}
+                {...register('type', { required: typeInput })}
               />
               <TextField
-                label="Тэги"
+                label={isEn ? 'Tags' : 'Тэги'}
                 margin="normal"
                 variant="outlined"
                 error={Boolean(errors.tags?.message)}
                 helperText={errors.tags?.message}
-                {...register('tags', { required: 'Укажите тэги' })}
+                {...register('tags', { required: tagsInput })}
               />
               <Button disabled={!isValid} type="submit" variant="contained">
-                Добавить предмет
+                {isEn ? <>Add item</> : <>Добавить предмет</>}
               </Button>
             </form>
           </Box>

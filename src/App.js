@@ -9,7 +9,7 @@ import MyCollection from './pages/MyCollection/MyCollection';
 import Home from './pages/Home/Home';
 import Collection from './pages/Collection/Collection';
 import Item from './pages/Item/Item';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUserInfo } from './redux/slices/user';
 import React from 'react';
 import axios from './axios';
@@ -17,6 +17,8 @@ import { AddCollection } from './pages/AddCollection/AddCollection';
 
 function App() {
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.user);
+  const color = theme === 'light' ? 'white' : 'rgba(10, 25, 41)';
   React.useEffect(() => {
     async function getMe() {
       const { data } = await axios.get('/me');
@@ -27,7 +29,9 @@ function App() {
   return (
     <>
       <Header />
-      <Container maxWidth="lg" sx={{ bgcolor: 'white', marginTop: '10px', borderRadius: '8px' }}>
+      <Container
+        maxWidth="lg"
+        sx={{ bgcolor: color, marginTop: '10px', borderRadius: '8px', transition: '1s' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
