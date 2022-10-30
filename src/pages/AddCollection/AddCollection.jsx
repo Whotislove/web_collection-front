@@ -20,6 +20,7 @@ export const AddCollection = () => {
   const [description, setDescription] = React.useState('');
   const [type, setType] = React.useState('');
   const [title, setTitle] = React.useState('');
+  const isValid = imageUrl && description && type && title;
   const { isAuth, language } = useSelector((state) => state.user);
   const isEn = language === 'en';
   const inputFileRef = React.useRef(null);
@@ -151,7 +152,7 @@ export const AddCollection = () => {
             {isEn ? <>Save</> : <>Сохранить</>}
           </Button>
         ) : (
-          <Button onClick={onSubmit} size="large" variant="contained">
+          <Button onClick={onSubmit} size="large" variant="contained" disabled={!isValid}>
             {isEn ? <>Publish сollection</> : <>Опубликовать коллекцию</>}
           </Button>
         )}

@@ -5,17 +5,19 @@
   .wrapper {
     display: flex;
     justify-content: space-between;
-    .logo {
-      text-decoration: none;
-    }
-    .buttons {
+    align-items: center;
+    .right_block {
       display: flex;
+      align-items: center;
       .language {
         margin-right: 8px;
         font-size: 24px;
         cursor: pointer;
         transition: 1s;
         user-select: none;
+        @media (max-width: 650px) {
+          font-size: 20px;
+        }
         &:hover {
           transform: scale(1.2);
         }
@@ -26,6 +28,11 @@
           margin-top: 6px;
           cursor: pointer;
           transition: 1s;
+          svg {
+            @media (max-width: 650px) {
+              width: 20px;
+            }
+          }
           &:hover {
             color: blue;
             transform: scale(1.2);
@@ -42,6 +49,9 @@
       }
       button {
         margin-left: 10px;
+        @media (max-width: 650px) {
+          font-size: 11px;
+        }
       }
       a {
         text-decoration: none;
@@ -56,11 +66,11 @@
   .wrapper {
     display: flex;
     justify-content: space-between;
-    .logo {
-      text-decoration: none;
-    }
-    .buttons {
+    align-items: center;
+
+    .right_block {
       display: flex;
+      align-items: center;
       .language {
         margin-right: 8px;
         font-size: 24px;
@@ -68,6 +78,9 @@
         transition: 1s;
         user-select: none;
         color: white;
+        @media (max-width: 650px) {
+          font-size: 20px;
+        }
         &:hover {
           transform: scale(1.2);
         }
@@ -79,6 +92,12 @@
           margin-top: 6px;
           cursor: pointer;
           transition: 1s;
+          svg {
+            @media (max-width: 650px) {
+              width: 20px;
+            }
+          }
+
           &:hover {
             color: orange;
             transform: scale(1.2);
@@ -95,10 +114,37 @@
       }
       button {
         margin-left: 10px;
+        @media (max-width: 650px) {
+          font-size: 11px;
+        }
       }
       a {
         text-decoration: none;
       }
     }
+  }
+}
+.logo {
+  text-decoration: none;
+
+  button {
+    @media (max-width: 650px) {
+      font-size: 11px;
+    }
+  }
+}
+.buttons {
+  display: flex;
+  a {
+    button {
+      @media (max-width: 650px) {
+        font-size: 11px;
+      }
+    }
+  }
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 5px;
   }
 }

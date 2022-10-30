@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
 function Header() {
-  const { theme, language } = useSelector((state) => state.user);
+  const { theme, language, isAuth } = useSelector((state) => state.user);
   const isLight = theme === 'light';
   const isEn = language === 'en';
   const navigate = useNavigate();
@@ -51,8 +51,8 @@ function Header() {
           <Link to="/" className={styles.logo}>
             <Button variant="contained">Web Collection</Button>
           </Link>
-          {location.pathname !== '/login' && location.pathname !== '/register' && <Search />}
-          <div className={styles.buttons}>
+          {/* {location.pathname !== '/login' && location.pathname !== '/register' && <Search />} */}
+          <div className={styles.right_block}>
             <div className={styles.language} onClick={language === 'en' ? onClickEng : onClickRu}>
               {language}
             </div>
@@ -64,28 +64,25 @@ function Header() {
               )}
             </div>
 
-            {!!Object.keys(user).length ? (
+            {isAuth ? (
               <div className={styles.ifAuth}>
                 <Link to="/mycollection">
                   <div className={isLight ? styles.name_light : styles.name_dark}>
                     {user.fullName}
                   </div>
                 </Link>
-                <Button variant="contained" onClick={() => onClickOut()}>
-                  {isEn ? <>Sign out</> : <>Выйти</>}
-                </Button>
+                <div className={styles.buttons}>
+                  <Button variant="contained" onClick={() => onClickOut()}>
+                    {isEn ? <>Sign out</> : <>Выйти</>}
+                  </Button>
+                </div>
               </div>
             ) : (
-              <>
+              <div className={styles.buttons}>
                 <Link to="/login">
                   <Button variant="outlined">{isEn ? <>Sign in</> : <>Войти</>}</Button>
                 </Link>
-                <Link to="/register">
-                  <Button variant="contained">
-                    {isEn ? <>Create account</> : <>Зарегистрироваться</>}
-                  </Button>{' '}
-                </Link>
-              </>
+              </div>
             )}
           </div>
         </div>

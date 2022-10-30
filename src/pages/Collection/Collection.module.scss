@@ -5,6 +5,7 @@
 .title {
   font-weight: bold !important;
   margin-bottom: 30px !important;
+  width: 50% !important;
   &_description {
     font-weight: bold !important;
   }
@@ -12,10 +13,11 @@
 .image {
   display: block;
   margin: 0 auto;
-  width: 50%;
+  width: 80%;
+  margin-bottom: 20px;
 }
 .description {
-  width: 80%;
+  width: 100%;
   word-wrap: break-word;
 }
 .theme {
@@ -23,16 +25,32 @@
 }
 .item {
   font-weight: bold !important;
+  margin-bottom: 20px !important;
   &_content {
     display: flex;
     justify-content: space-between;
+    @media (max-width: 940px) {
+      flex-direction: column;
+      align-items: center;
+    }
   }
   &_wrapper {
     width: 60%;
+    @media (max-width: 940px) {
+      width: 70%;
+    }
   }
   &_buttons {
     margin-top: 20px;
     text-align: end;
+
+    button {
+      @media (max-width: 480px) {
+        font-size: 11px;
+        margin-bottom: 5px;
+      }
+    }
+
     &_open {
       text-decoration: none;
     }
@@ -44,4 +62,35 @@
   gap: 10px;
   left: 60%;
   top: 4%;
+  @media (max-width: 890px) {
+    button {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 740px) {
+    left: 50%;
+    top: 4%;
+  }
+  @media (max-width: 710px) {
+    flex-direction: column;
+    left: 70%;
+    top: 4%;
+  }
+  @media (max-width: 630px) {
+    flex-direction: column;
+    left: 57%;
+    top: 4%;
+  }
+}
+.inputBlock {
+  width: 30%;
+  @media (max-width: 890px) {
+    width: 50%;
+  }
+  @media (max-width: 600px) {
+    width: 70%;
+  }
+  @media (max-width: 450px) {
+    width: 100%;
+  }
 }

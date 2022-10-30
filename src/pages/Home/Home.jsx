@@ -1,39 +1,26 @@
 import React from 'react';
 import Post from '../../components/Post/Post';
+import ItemPost from '../../components/ItemPost/ItemPost';
 import styles from './Home.module.scss';
 import { NavigateNext, NavigateBefore } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCollections } from '../../redux/slices/collections';
+import { fetchCollections, fetchItems } from '../../redux/slices/collections';
 import { Link } from 'react-router-dom';
 
-const tags = [
-  'kotiki',
-  'sobachki',
-  'svini',
-  'cherepasshki',
-  'kotiki',
-  'sobachki',
-  'svini',
-  'cherepasshki',
-  'kotiki',
-  'sobachki',
-  'svini',
-  'cherepasshki',
-  'kotiki',
-  'sobachki',
-  'svini',
-  'cherepasshki',
-];
 const Home = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(fetchCollections());
+    dispatch(fetchItems());
   }, []);
-  const { collections, biggest, status } = useSelector((state) => state.collections);
+  const { collections, biggest, collectionsStatus, itemsStatus, items, tags } = useSelector(
+    (state) => state.collections,
+  );
   const { theme, language } = useSelector((state) => state.user);
   const isEn = language === 'en';
-  const isLoading = status === 'loaded';
+  const collectionIsLoading = collectionsStatus === 'loaded';
+  const itemsIsLoading = itemsStatus === 'loaded';
   const isLight = theme === 'light';
   const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   const [number, setNumber] = React.useState(0);
@@ -50,7 +37,7 @@ const Home = () => {
           <span className={isLight ? styles.article_light : styles.article_dark}>
             {isEn ? <>The largest collections</> : <>Самые большие коллекции</>}
           </span>
-          {isLoading ? (
+          {collectionIsLoading ? (
             <Link to={`/collection/${biggest[number]._id}`} className={styles.link}>
               <Post
                 title={biggest[number].title}
@@ -65,10 +52,10 @@ const Home = () => {
             <>Загрузка</>
           )}
           <div className={styles.underSlider}>
-            <Button sx={{ color: color, borderRadius: 50 }} onClick={() => onClickBefore()}>
+            <Button sx={{ color, borderRadius: 50 }} onClick={() => onClickBefore()}>
               <NavigateBefore sx={{ fontSize: 50, cursor: 'pointer' }} />
             </Button>
-            <Button sx={{ color: color, borderRadius: 50 }} onClick={() => onClickNext()}>
+            <Button sx={{ color, borderRadius: 50 }} onClick={() => onClickNext()}>
               <NavigateNext sx={{ fontSize: 50, cursor: 'pointer' }} />
             </Button>
           </div>
@@ -78,23 +65,37 @@ const Home = () => {
             {isEn ? <>Tags</> : <>Тэги</>}
           </span>
           <div className={styles.tags_container}>
-            {tags.map((e, i) => (
-              <div key={i} className={styles.tag}>{`#${e}`}</div>
-            ))}
+            {itemsIsLoading ? (
+              tags.map((e, i) => <div key={i} className={styles.tag}>{`#${e}`}</div>)
+            ) : isEn ? (
+              <>Loading</>
+            ) : (
+              <>Загрузка</>
+            )}
           </div>
         </div>
       </div>
       <p className={isLight ? styles.title_light : styles.title_dark}>
-        {isEn ? <>Collections</> : <>Коллекции</>}
+        {isEn ? <>Items</> : <>Предметы</>}
       </p>
       <div className={styles.collection}>
-        {collections.map((e, id) => (
-          <div key={id} className={styles.post}>
-            <Link to={`/collection/${e._id}`} className={styles.link}>
-              <Post title={e.title} type={e.type} image={e.imageUrl} id={e._id} />
-            </Link>
-          </div>
-        ))}
+        {itemsIsLoading && collectionIsLoading ? (
+          items.map((e, id) => (
+            <div key={id} className={styles.post}>
+              <Link to={`/collection/${e.collectionName._id}`} className={styles.link}>
+                <ItemPost
+                  fullName={collections.find((el) => el._id === e.collectionName._id).user.fullName}
+                  itemName={e.name}
+                  collectionName={e.collectionName.title}
+                />
+              </Link>
+            </div>
+          ))
+        ) : isEn ? (
+          <>Loading</>
+        ) : (
+          <>Загрузка</>
+        )}
       </div>
     </div>
   );

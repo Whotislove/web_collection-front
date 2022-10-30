@@ -14,7 +14,6 @@ const Search = () => {
       </svg>
       <input
         // value={value}
-        className={styles.input}
         placeholder="Search"
       />
       {/* {value && (

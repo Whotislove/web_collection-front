@@ -184,44 +184,46 @@ function Collection() {
           )}
         </div>
         {isAuth && (user.status === 'admin' || data.user === user._id) && (
-          <Box
-            sx={{
-              width: '30%',
-              textAlign: 'center',
-              bgcolor: 'white',
-              padding: 1,
-              borderRadius: '8px',
-            }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <TextField
-                label={isEn ? 'Name' : 'Название'}
-                margin="normal"
-                variant="outlined"
-                error={Boolean(errors.name?.message)}
-                helperText={errors.name?.message}
-                {...register('name', { required: nameInput })}
-              />
-              <TextField
-                label={isEn ? 'Type' : 'Тип'}
-                margin="normal"
-                variant="outlined"
-                error={Boolean(errors.type?.message)}
-                helperText={errors.type?.message}
-                {...register('type', { required: typeInput })}
-              />
-              <TextField
-                label={isEn ? 'Tags' : 'Тэги'}
-                margin="normal"
-                variant="outlined"
-                error={Boolean(errors.tags?.message)}
-                helperText={errors.tags?.message}
-                {...register('tags', { required: tagsInput })}
-              />
-              <Button disabled={!isValid} type="submit" variant="contained">
-                {isEn ? <>Add item</> : <>Добавить предмет</>}
-              </Button>
-            </form>
-          </Box>
+          <div className={styles.inputBlock}>
+            <Box
+              sx={{
+                textAlign: 'center',
+                bgcolor: 'white',
+                padding: 1,
+                borderRadius: '8px',
+              }}
+              classes={{ root: styles.input }}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <TextField
+                  label={isEn ? 'Name' : 'Название'}
+                  margin="normal"
+                  variant="outlined"
+                  error={Boolean(errors.name?.message)}
+                  helperText={errors.name?.message}
+                  {...register('name', { required: nameInput })}
+                />
+                <TextField
+                  label={isEn ? 'Type' : 'Тип'}
+                  margin="normal"
+                  variant="outlined"
+                  error={Boolean(errors.type?.message)}
+                  helperText={errors.type?.message}
+                  {...register('type', { required: typeInput })}
+                />
+                <TextField
+                  label={isEn ? 'Tags' : 'Тэги'}
+                  margin="normal"
+                  variant="outlined"
+                  error={Boolean(errors.tags?.message)}
+                  helperText={errors.tags?.message}
+                  {...register('tags', { required: tagsInput })}
+                />
+                <Button disabled={!isValid} type="submit" variant="contained">
+                  {isEn ? <>Add item</> : <>Добавить предмет</>}
+                </Button>
+              </form>
+            </Box>
+          </div>
         )}
       </div>
     </div>

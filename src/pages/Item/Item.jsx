@@ -73,29 +73,28 @@ function Item() {
       <div className={styles.content}>
         {isAuth &&
           (isChange ? (
-            <Button
-              sx={{ position: 'absolute', left: '80%' }}
-              startIcon={<Done />}
-              variant="contained"
-              onClick={() => {
-                updateItem({
-                  name: name,
-                  type: type,
-                  tags: typeof tags === 'string' ? tags.split(',') : tags,
-                });
+            <div className={styles.button}>
+              <Button
+                startIcon={<Done />}
+                variant="contained"
+                onClick={() => {
+                  updateItem({
+                    name: name,
+                    type: type,
+                    tags: typeof tags === 'string' ? tags.split(',') : tags,
+                  });
 
-                setChange(false);
-              }}>
-              {isEn ? <>Save</> : <>Сохранить</>}
-            </Button>
+                  setChange(false);
+                }}>
+                {isEn ? <>Save</> : <>Сохранить</>}
+              </Button>
+            </div>
           ) : (
-            <Button
-              sx={{ position: 'absolute', left: '80%' }}
-              startIcon={<Edit />}
-              variant="contained"
-              onClick={() => setChange(true)}>
-              {isEn ? <>Edit</> : <>Редактировать</>}
-            </Button>
+            <div className={styles.button}>
+              <Button startIcon={<Edit />} variant="contained" onClick={() => setChange(true)}>
+                {isEn ? <>Edit</> : <>Редактировать</>}
+              </Button>
+            </div>
           ))}
         <Typography classes={{ root: styles.title }} sx={{ color }} variant="h4">
           {isEn ? <>Name</> : <>Название</>}
@@ -175,7 +174,6 @@ function Item() {
             sx={{ width: '80%', bgcolor: 'white', borderRadius: '8px' }}
             value={value}
             multiline
-            disabled={!isAuth || value.length === 0}
             onChange={(e) => setValue(e.target.value)}
           />
           <Button

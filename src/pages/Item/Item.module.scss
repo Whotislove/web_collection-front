@@ -15,6 +15,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    @media (max-width: 700px) {
+      flex-direction: column;
+      div {
+        width: 98%;
+      }
+
+      align-items: end;
+    }
   }
   &_message {
     display: flex;
@@ -45,5 +53,21 @@
     &:hover {
       background-color: #1c3395;
     }
+  }
+}
+.button {
+  position: absolute;
+  left: 80%;
+  @media (max-width: 720px) {
+    left: 70%;
+  }
+  @media (max-width: 600px) {
+    button {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 450px) {
+    left: 60%;
+    top: -8%;
   }
 }

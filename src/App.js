@@ -25,7 +25,7 @@ function App() {
       dispatch(addUserInfo(data));
     }
     getMe();
-  });
+  }, []);
   return (
     <>
       <Header />

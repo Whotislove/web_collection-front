@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import styles from './Register.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import axios from '../../axios';
@@ -77,6 +77,23 @@ function Register() {
           {...register('password', { required: 'Укажите пароль' })}
           fullWidth
         />
+        <Typography sx={{ marginBottom: 2, color }}>
+          {isEn ? (
+            <>
+              If you already have an account, please&nbsp;
+              <Link className={styles.link} to="/register">
+                login
+              </Link>
+            </>
+          ) : (
+            <>
+              Если у вас уже есть аккаунт,&nbsp;
+              <Link className={styles.link} to="/login">
+                войдите
+              </Link>
+            </>
+          )}
+        </Typography>
         <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
           {isEn ? <>Sign up</> : <>Зарегистрироваться</>}
         </Button>

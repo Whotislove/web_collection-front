@@ -12,6 +12,12 @@
     justify-content: center;
     .post {
       width: 33%;
+      @media (max-width: 900px) {
+        width: 50%;
+      }
+      @media (max-width: 650px) {
+        width: 100%;
+      }
     }
   }
 }
