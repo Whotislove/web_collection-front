@@ -1,0 +1,28 @@
+.root {
+  padding: 50px;
+}
+
+.table {
+  width: 60%;
+  margin: 0 auto;
+  @media (max-width: 830px) {
+    width: 80%;
+  }
+  @media (max-width: 650px) {
+    width: 90%;
+  }
+}
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  @media (max-width: 945px) {
+    button {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 670px) {
+    flex-direction: column;
+  }
+}

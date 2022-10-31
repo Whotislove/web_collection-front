@@ -28,9 +28,13 @@ const Login = () => {
     const { data } = await axios
       .post('login', values)
       .catch((res) => alert(res.response.data.message));
-    dispatch(addUserInfo(data));
-    if ('token' in data) {
-      window.localStorage.setItem('token', data.token);
+    if (data.status === 'block') {
+      alert('Вы заблокированы');
+    } else {
+      dispatch(addUserInfo(data));
+      if ('token' in data) {
+        window.localStorage.setItem('token', data.token);
+      }
     }
     if (data) {
       navigate('/');

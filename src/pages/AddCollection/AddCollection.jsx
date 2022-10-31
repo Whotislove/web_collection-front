@@ -115,8 +115,8 @@ export const AddCollection = () => {
           </Button>
           <img
             className={styles.image}
-            src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
-            // src={`http://localhost:1111${imageUrl}`}
+            // src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+            src={`http://localhost:1111${imageUrl}`}
             alt="Uploaded"
           />
         </>

@@ -24,3 +24,19 @@
 .link {
   text-decoration: none;
 }
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 620px) {
+    a {
+      button {
+        font-size: 11px;
+      }
+    }
+  }
+  @media (max-width: 475px) {
+    flex-direction: column-reverse;
+    gap: 10px;
+    align-items: center;
+  }
+}

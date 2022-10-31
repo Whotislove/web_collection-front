@@ -8,7 +8,7 @@ import axios from '../../axios';
 import { useSelector } from 'react-redux';
 
 function Collection() {
-  const { isAuth, theme, language } = useSelector((state) => state.user);
+  const { isAuth, theme, language, user } = useSelector((state) => state.user);
   const isEn = language === 'en';
   const color = theme === 'light' ? 'rgba(10, 25, 41)' : 'white';
   const [data, setData] = React.useState([]);
@@ -25,12 +25,18 @@ function Collection() {
       <Typography classes={{ root: styles.root_title }} variant="h4" sx={{ color }}>
         {isEn ? <>My collections</> : <>Мои коллекции</>}
       </Typography>
-      <Link to="/addcollection" className={styles.link}>
-        {' '}
-        <Button variant="outlined" startIcon={<Add />}>
-          {isEn ? <>Add collection</> : <>Добавить коллекцию</>}
-        </Button>
-      </Link>
+      <div className={styles.buttons}>
+        <Link to="/addcollection" className={styles.link}>
+          <Button variant="outlined" startIcon={<Add />}>
+            {isEn ? <>Add collection</> : <>Добавить коллекцию</>}
+          </Button>
+        </Link>
+        {user.status === 'admin' && (
+          <Link to="/users" className={styles.link}>
+            <Button variant="contained">{isEn ? <>Users</> : <>Пользователи</>}</Button>
+          </Link>
+        )}
+      </div>
 
       <div className={styles.collection}>
         {!isLoading ? (

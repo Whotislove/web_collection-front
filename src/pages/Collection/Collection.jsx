@@ -137,8 +137,8 @@ function Collection() {
       </Typography>
       <img
         className={styles.image}
-        src={`${process.env.REACT_APP_API_URL}${data.imageUrl}`}
-        // src={`http://localhost:1111${data.imageUrl}`}
+        // src={`${process.env.REACT_APP_API_URL}${data.imageUrl}`}
+        src={`http://localhost:1111${data.imageUrl}`}
         alt="cover"
       />
       <Typography classes={{ root: styles.title_description }} variant="h4" color={color}>
